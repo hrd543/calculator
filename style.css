@@ -1,0 +1,49 @@
+.container {
+    width: 600px;
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.utilities {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.main {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-gap: 10px;
+}
+
+.container > *{
+    margin: 10px 0 10px 0;
+}
+  
+.screen {
+    flex: 1;
+    border: solid;
+}
+
+.utilities {
+    flex: 1;
+}
+
+.main {
+    flex: 4;
+}
+
+.utilities > button:nth-child(1) {
+    flex: 1;
+    margin-right: 5px;
+}
+
+.utilities > button:nth-child(2) {
+    flex: 1;
+    margin-left: 5px;
+}
+
+/* Add classes to items which have, for example, all flex: 1 to reduce the amount of code.*/
