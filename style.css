@@ -4,6 +4,9 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 10px;
+    padding: 10px;
+    border: solid;
 }
 
 .utilities {
@@ -16,34 +19,31 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr;
-    grid-gap: 10px;
-}
-
-.container > *{
-    margin: 10px 0 10px 0;
+    gap: 10px;
+    flex: 4;
 }
   
-.screen {
+.screen, .utilities, .utilities > * {
     flex: 1;
+}
+
+.screen {
     border: solid;
 }
 
 .utilities {
-    flex: 1;
+    gap: 10px;
 }
 
-.main {
-    flex: 4;
+button {
+    border: none;
+    border-radius: 5%;
 }
 
-.utilities > button:nth-child(1) {
-    flex: 1;
-    margin-right: 5px;
+.operations {
+    background-color: lightcoral;
 }
 
-.utilities > button:nth-child(2) {
-    flex: 1;
-    margin-left: 5px;
+.equals {
+    background-color: red;
 }
-
-/* Add classes to items which have, for example, all flex: 1 to reduce the amount of code.*/
