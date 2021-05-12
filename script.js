@@ -23,13 +23,16 @@ function calculate(operation, x, y){
 
 
 // The string to store the values in the bottom line of the screen
-let firstOperandString = "";
-let operator = "";
+let operandString  = "";
+let operand  = 0;
+let operator = "+";
 
 let numberButtons = document.querySelectorAll(".number");
 let operationButtons = document.querySelectorAll(".operations");
 let equalsButton = document.querySelector(".equals");
 let utilButtons = document.querySelectorAll(".utilities > button");
+
+let screenContent = document.querySelector("p");
 
 numberButtons.forEach(btn => btn.addEventListener("click", numPressed));
 operationButtons.forEach(btn => btn.addEventListener("click", opPressed));
@@ -37,20 +40,43 @@ equalsButton.addEventListener("click", equalsPressed);
 utilButtons.forEach(btn => btn.addEventListener("click", utilPressed));
 
 function equalsPressed () {
-    alert("equals");
+    let answer = calculate(operator, operand, parseFloat(operandString));
+    //alert(answer);
+    operand = answer;
+    operandString = `${operand}`;
+    screenContent.textContent = answer;
 }
 
 function utilPressed() {
-    alert(this.textContent);
+    let util = this.textContent;
+    if(util[0] === "C"){
+        operandString = "";
+        operand = 0;
+        operator = "+";
+        screenContent.textContent = "";
+    }
+    else{
+        operandString = operandString.slice(0,-1);
+        screenContent.textContent = operandString;
+
+        // If equals was pressed undo the last operation... Currently removes the last number.
+    }
 }
 
 function opPressed () {
     operator = this.textContent;
-    alert(this.textContent);
+    if(isNaN(operandString) || operandString.length === 0){
+        alert("That's not a number");
+    }
+    else{
+        operand = parseFloat(operandString);
+        operandString = "";
+        screenContent.textContent = operand + operator;
+    }
 }   
 
 
 function numPressed () {
-    firstOperandString += this.textContent;
-    alert(this.textContent);
+    operandString += this.textContent;
+    screenContent.textContent += this.textContent;
 }
