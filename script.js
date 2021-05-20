@@ -62,7 +62,7 @@ let operationButtons = document.querySelectorAll(".operations");
 let equalsButton = document.querySelector(".equals");
 let utilButtons = document.querySelectorAll(".utilities > button");
 
-let screenContent = document.querySelector("p");
+let screenContent = document.querySelectorAll("p");
 
 numberButtons.forEach(btn => btn.addEventListener("click", numPressed));
 operationButtons.forEach(btn => btn.addEventListener("click", opPressed));
@@ -75,10 +75,11 @@ function equalsPressed () {
     }
     else {
         op.operand = parseFloat(opString);
-        //operations.push(op);
+        operations.push(new Operation(op.operator, op.operand));
         console.log(op);
-        output = calculate(op.operator, output, parseFloat(opString));
-        screenContent.textContent = output;
+        screenContent[0].textContent = `${output} ${op.operator} ${op.operand}`;
+        output = calculate(op.operator, output, op.operand);
+        screenContent[1].textContent = output;
         op.operator = "=";
         opString = output;
         console.log(output);
@@ -95,10 +96,13 @@ function opPressed () {
     }
     else {
         op.operand = parseFloat(opString);
-        if (op.operator !== "=") operations.push(op);
+        operations.push(new Operation(op.operator, op.operand));
         console.log(op);
+        console.log(operations);
         output = calculate(op.operator, output, op.operand);
         op.operator = this.textContent;
+        screenContent[0].textContent = op.operator;
+        screenContent[1].textContent = output;
         opString = "";
         console.log(output);
     }
@@ -107,5 +111,6 @@ function opPressed () {
 
 function numPressed () {
     opString += this.textContent;
-    screenContent.textContent = opString;
+    screenContent[0].textContent = `${op.operand} ${op.operator}`;
+    screenContent[1].textContent = opString;
 }
