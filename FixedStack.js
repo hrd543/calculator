@@ -31,3 +31,4 @@ class FixedStack {
     }
 
 }
+export {FixedStack};
