@@ -47,3 +47,7 @@ button {
 .equals {
     background-color: red;
 }
+
+#delete {
+    font-size: 50px;
+}
