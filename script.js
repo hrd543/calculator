@@ -1,38 +1,43 @@
-// Returns the value of operation(x,y)
-// E.g. "/", 4, 2 ==> 2
 function calculate(operation, x, y){
     switch(operation){
         case "+": return x+y;
         case "-": return x-y;
         case "/": return x/y;
         case "*": return x*y;
+        case "=": return x;
+    }
+}
+
+// A simple object to store each operand, operator pair, i.e. 3+ or 0.1*
+class Operation {
+    constructor(operator, operand) {
+        this.operator = operator;
+        this.operand = operand;
+    }
+
+    // Return the inverse of the operation, i.e. + --> - and * --> /
+    inverse() {
+        switch(this.operator){
+            case "+": return "-";
+            case "-": return "+";
+            case "/": return "*";
+            case "*": return "/";
+            case "=": return "=";
+        }
     }
 }
 
 
-// Add event listeners to all buttons:
-// initially the first number is set to an empty string.
-// Whenever a number is pressed, it gets concatenated onto this string.
-// This string is printed on the bottom line of the screen.
-// When an operator button is pressed, this number is parsed and stored as a number.
-// This number along with the operator are printed on the top line.
-// If it is Nan, then return error.
-// Store whichever operation was pressed as a string.
-// Otherwise, initialise the string to zero once more and wait for more numbers.
-// When equals is pressed, parse the second input and send both to the calc function.
-
-
-// The string to store the values in the bottom line of the screen
-let operandString  = "";
-let operand  = 0;
-let operator = "+";
+let opString = "";
+let output = 0;
+let op = new Operation("+", 0);
 
 let numberButtons = document.querySelectorAll(".number");
 let operationButtons = document.querySelectorAll(".operations");
 let equalsButton = document.querySelector(".equals");
 let utilButtons = document.querySelectorAll(".utilities > button");
 
-let screenContent = document.querySelector("p");
+let screenContent = document.querySelectorAll("p");
 
 numberButtons.forEach(btn => btn.addEventListener("click", numPressed));
 operationButtons.forEach(btn => btn.addEventListener("click", opPressed));
@@ -40,43 +45,51 @@ equalsButton.addEventListener("click", equalsPressed);
 utilButtons.forEach(btn => btn.addEventListener("click", utilPressed));
 
 function equalsPressed () {
-    let answer = calculate(operator, operand, parseFloat(operandString));
-    //alert(answer);
-    operand = answer;
-    operandString = `${operand}`;
-    screenContent.textContent = answer;
+    if (isNaN(opString) || opString.length === 0){
+        alert("That is not a number!");
+    }
+    else {
+        op.operand = parseFloat(opString);
+        console.log(op);
+        screenContent[0].textContent = `${output} ${op.operator} ${op.operand}`;
+        output = calculate(op.operator, output, op.operand);
+        screenContent[1].textContent = output;
+        op.operator = "=";
+        opString = `${output}`;
+        console.log(output);
+    }
 }
 
 function utilPressed() {
-    let util = this.textContent;
-    if(util[0] === "C"){
-        operandString = "";
-        operand = 0;
-        operator = "+";
-        screenContent.textContent = "";
+    if (this.textContent === "Clear") {
+        //clear method
     }
-    else{
-        operandString = operandString.slice(0,-1);
-        screenContent.textContent = operandString;
 
-        // If equals was pressed undo the last operation... Currently removes the last number.
+    else {
+        opString = opString.slice(0, -1);
+        screenContent[1].textContent = opString;
     }
 }
 
 function opPressed () {
-    operator = this.textContent;
-    if(isNaN(operandString) || operandString.length === 0){
-        alert("That's not a number");
+    if (isNaN(opString) || opString.length === 0){
+        alert("That is not a number!");
     }
-    else{
-        operand = parseFloat(operandString);
-        operandString = "";
-        screenContent.textContent = operand + operator;
+    else {
+        op.operand = parseFloat(opString);
+        console.log(op);
+        output = calculate(op.operator, output, op.operand);
+        op.operator = this.textContent;
+        screenContent[0].textContent = `${output} ${op.operator}`;
+        screenContent[1].textContent = "";
+        opString = "";
+        console.log(output);
     }
 }   
 
 
 function numPressed () {
-    operandString += this.textContent;
-    screenContent.textContent += this.textContent;
+    opString += this.textContent;
+    screenContent[0].textContent = `${output} ${op.operator}`;
+    screenContent[1].textContent = opString;
 }
